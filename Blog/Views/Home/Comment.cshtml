@@ -1,0 +1,10 @@
+﻿@model CommentViewModel
+
+<div>
+    <form method="post" asp-controller="Home" asp-action="Comment">
+        <input asp-for="PostId" type="hidden"/>
+        <input asp-for="Message"/>
+        <button type="submit">Submit</button>
+        <div class="g-recaptcha" data-sitekey="6LeyntgUAAAAAIEi6z7sNh92j1moLGAKYeKYWjB4"></div>
+    </form>
+</div>
