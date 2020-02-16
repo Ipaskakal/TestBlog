@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blog.Models
+namespace Blog.DAL.Models
 {
     public class Comment
     {
-        public int Id { get; set; }
-        [Required]
-        public string Text { get; set; } = "";
-        public DateTime Created { get; set; }
-        [Required]
-        public int PostId { get; set; }
+        public long Id { get; set; }
+        public string Text { get; set; } //Comment text
+        public DateTime Created { get; set; } //Time of creation
 
-        [Required]
-        public string UserName { get; set; }
+        public long PostId { get; set; }
+        public Post Post { get; set; }
+
+        public string AuthorId { get; set; }
+        public IdentityUser Author { get; set; }
+
     }
 }

@@ -1,0 +1,83 @@
+﻿@model PostViewModel
+
+    <div class="container">
+        <h2 class="text-center">@Model.Title</h2>
+        <div class="row  h-100">
+            <div class="col h-100">
+                <p><markdown>@Model.Body</markdown></p>
+
+
+                <p>Posted by @Model.Author</p>
+            </div>
+
+
+
+        </div>
+        <div class="comments">
+
+            @foreach (var c in Model.DisplayedComments)
+            {
+                <p>
+                    <markdown>@c.Message</markdown> ---- @c.Creation --- Posted by @c.Username
+                </p>
+            }
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            
+                await Html.RenderPartialAsync("Comment", new CommentViewModel { PostId = Model.Id });
+           
+        }
+            else
+            {
+            <div><a asp-action="Login" asp-controller="Auth">Sign in</a> to comment</div>
+            }
+    </div>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <ul class="pagination" data-bind="html: pagination">
+            <li class="page-item @(Model.PageNum == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Home", new { id = Model.PageNum - 1 })"><</a>
+            </li>
+            <li class="page-item @(Model.PageNum == 1 ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Home", new { id = 1 })">1</a>
+            </li>
+            @{
+                var iMin = 2;
+                var iMax = Model.PageCount - 1;
+                bool isNotEnd = false;
+                const int DIAP = 3;
+            }
+            @if (Model.PageNum - DIAP > iMin)
+            {
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+                iMin = Model.PageNum - DIAP;
+            }
+            @if (Model.PageNum + DIAP < iMax)
+            {
+                isNotEnd = true;
+                iMax = Model.PageNum + DIAP;
+            }
+            @for (int i = iMin; i <= iMax; i++)
+            {
+                <li class="page-item @(Model.PageNum == i ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Home", new { id = i })">@i</a>
+                </li>
+            }
+            @if (isNotEnd)
+            {
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+            }
+            @if (Model.PageCount > 1)
+            {
+                <li class="page-item @(Model.PageNum == Model.PageCount ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Home", new { id = Model.PageCount })">@Model.PageCount</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageNum >= Model.PageCount ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Home", new { id = Model.PageNum + 1 })">></a>
+            </li>
+        </ul>
+    </div>
+</div>
