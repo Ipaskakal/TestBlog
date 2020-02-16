@@ -38,7 +38,7 @@ namespace Blog.DAL.Repositories
         public int GetPageCount(int onPage)
         {
             int count = DbSet.Count();
-            return count / onPage + count % onPage == 0 ? 0 : 1;
+            return count / onPage + (count % onPage == 0 ? 0 : 1);
         }
         public IEnumerable<Post> GetPage(int page, int onPage)
         {
@@ -53,6 +53,7 @@ namespace Blog.DAL.Repositories
                 .Take(Math.Min(onPage, postCount - skippedCount))
                 .Include(x => x.Author)
                 .Include(x => x.Comments)
+                
                 .ToList();
         }
     }

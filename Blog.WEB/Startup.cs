@@ -33,12 +33,7 @@ namespace Blog.WEB
             ServiceProvider serviceProvider = services.BuildServiceProvider();
             var logger = serviceProvider.GetService<ILogger<PostController>>();
             services.AddSingleton(typeof(ILogger), logger);
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            
             services.AddScoped<DAL.Interfaces.IUnitOfWork, DAL.UnitOfWork>();
             services.AddRazorPages();
             services.AddDbContext<DAL.Data.AppDbContext>(options =>
@@ -111,15 +106,15 @@ namespace Blog.WEB
             };
             //Creating admin user
             string userPWD = Configuration["AppSettings:UserPassword"];
-            var _user = await UserManager.FindByEmailAsync(Configuration["AppSettings:UserEmail"]).ConfigureAwait(true);
+            var _user = await UserManager.FindByEmailAsync(Configuration["AppSettings:UserEmail"]).ConfigureAwait(false);
 
             if (_user == null) //If no admin user exist - we create new, and give him admin role
             {
-                var createPowerUser = await UserManager.CreateAsync(poweruser, userPWD).ConfigureAwait(true);
+                var createPowerUser = await UserManager.CreateAsync(poweruser, userPWD).ConfigureAwait(false);
                 if (createPowerUser.Succeeded)
                 {
                     //here we tie the new user to the role
-                    await UserManager.AddToRoleAsync(poweruser, "Admin").ConfigureAwait(true);
+                    await UserManager.AddToRoleAsync(poweruser, "Admin").ConfigureAwait(false);
 
                 }
             }

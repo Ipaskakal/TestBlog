@@ -29,6 +29,7 @@ namespace Blog.DAL.Repositories
                 .Where(x => x.PostId == postId)
                 .OrderByDescending(x => x.Created)
                 .Skip(onPage * (page - 1)).Take(onPage)
+                .Include(x => x.Author)
                 .ToList();
         }
 

@@ -10,7 +10,18 @@
                 <p>Posted by @Model.Author.UserName</p>
             </div>
 
-
+            @if (User.IsInRole("Admin") || Model.Author.Id ==User.Identity.Name)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="@Url.Action("Edit", "Post", new { id = Model.Id })">Edit</a>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4" style="text-align:right">
+                        <a href="@Url.Action("Delete", "Post", new { id = Model.Id })">Delete</a>
+                    </div>
+                </div>
+            }
 
         </div>
         <div class="comments">
@@ -38,10 +49,10 @@
     <div class="col-md-6 offset-md-3">
         <ul class="pagination" data-bind="html: pagination">
             <li class="page-item @(Model.PageNum == 1 ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", "Home", new { id = Model.PageNum - 1 })"><</a>
+                <a class="page-link" href="@Url.Action("Post", "Post", new { id = Model.Id, page = Model.PageNum - 1 })"><</a>
             </li>
             <li class="page-item @(Model.PageNum == 1 ? "active" : "")">
-                <a class="page-link" href="@Url.Action("Index", "Home", new { id = 1 })">1</a>
+                <a class="page-link" href="@Url.Action("Post", "Post", new {id = Model.Id, page = 1 })">1</a>
             </li>
             @{
                 var iMin = 2;
@@ -62,7 +73,7 @@
             @for (int i = iMin; i <= iMax; i++)
             {
                 <li class="page-item @(Model.PageNum == i ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", "Home", new { id = i })">@i</a>
+                    <a class="page-link" href="@Url.Action("Post", "Post", new {id = Model.Id, page = i })">@i</a>
                 </li>
             }
             @if (isNotEnd)
@@ -72,11 +83,11 @@
             @if (Model.PageCount > 1)
             {
                 <li class="page-item @(Model.PageNum == Model.PageCount ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", "Home", new { id = Model.PageCount })">@Model.PageCount</a>
+                    <a class="page-link" href="@Url.Action("Post", "Post", new {id = Model.Id, page = Model.PageCount })">@Model.PageCount</a>
                 </li>
             }
             <li class="page-item @(Model.PageNum >= Model.PageCount ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", "Home", new { id = Model.PageNum + 1 })">></a>
+                <a class="page-link" href="@Url.Action("Post", "Post", new {id = Model.Id, page = Model.PageNum + 1 })">></a>
             </li>
         </ul>
     </div>

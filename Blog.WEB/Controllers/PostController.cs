@@ -15,7 +15,7 @@ namespace Blog.WEB.Controllers
 {
     public class PostController : Controller
     {
-        private const int ON_PAGE = 10;
+        private const int ON_PAGE = 5;
 
         private readonly DAL.Interfaces.IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -59,6 +59,7 @@ namespace Blog.WEB.Controllers
                     CommentViewModel temp;
                     foreach (var comment in comments)
                     {
+
                         temp = new CommentViewModel();
                         _mapper.Map(comment, temp);
                         model.DisplayedComments.Add(temp);
@@ -70,16 +71,44 @@ namespace Blog.WEB.Controllers
             }
             return View("Error");
         }
-
-        public IActionResult Delete(long id, int page, long postId)
+        
+        public IActionResult Delete(long id)
         {
-            if (!_unitOfWork.CommentRepository.Remove(id))
+            if (!_unitOfWork.PostRepository.Remove(id))
                 return View("Error"); 
             _unitOfWork.Commit();
-            return RedirectToAction( "Post", new { id = postId, page });
+            return RedirectToAction("Index","Home");
         }
-        
-        
+
+        public IActionResult Edit(long id)
+        {
+            var model = new PostCreationViewModel();
+            var post = _unitOfWork.PostRepository.Get(id);
+            if (post != null)
+            {
+                _mapper.Map(post, model);
+                return View( model);
+            }
+            return View("Error");
+        }
+
+        [HttpPost]
+        public IActionResult Edit(PostCreationViewModel model) //Checking is edited post is valid and saving it to database 
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _unitOfWork.PostRepository.Get((long)model.Id);
+                if (entity == null)
+                    return View("Error");
+                _mapper.Map(model, entity);
+                _unitOfWork.PostRepository.Update(entity);
+                _unitOfWork.Commit();
+                return RedirectToAction("Post", new { id = model.Id }); //Opening edited post
+            }
+            return View(model);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Comment(CommentViewModel model)
         {
@@ -96,12 +125,14 @@ namespace Blog.WEB.Controllers
             {
                 var entity = new DAL.Models.Comment
                 {
+                    Author = await _userManager.GetUserAsync(User).ConfigureAwait(false),
                     AuthorId = _userManager.GetUserId(User),
                     PostId = model.PostId,
                     Created = DateTime.Now,
                     Text = model.Text
                 };
                 _unitOfWork.CommentRepository.Add(entity);
+                var x =_unitOfWork.PostRepository.Get(model.PostId);
                 _unitOfWork.Commit();
                 return RedirectToAction( "Post", new { id = model.PostId });
             }

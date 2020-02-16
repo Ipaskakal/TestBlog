@@ -19,7 +19,7 @@ namespace Blog.WEB.Controllers
 {
     public class HomeController : Controller
     {
-        const int ON_PAGE = 10;
+        const int ON_PAGE = 5;
         private IMapper _mapper;
         private IConfiguration _configuration;
         private DAL.Interfaces.IUnitOfWork _unitOfWork;
@@ -60,12 +60,12 @@ namespace Blog.WEB.Controllers
         {
             if (model != null)
             {
-                
+
+                model.AuthorId = _userManager.GetUserId(User); //Setting current user as author
 
                 if (ModelState.IsValid)
                 {
                     var entity = new DAL.Models.Post();
-                    model.AuthorId = _userManager.GetUserId(User); //Setting current user as author
                     _mapper.Map(model, entity);
                     entity.Created = DateTime.Now;
                     _unitOfWork.PostRepository.Add(entity);
@@ -83,6 +83,8 @@ namespace Blog.WEB.Controllers
         {
             return View();
         }
+
+
 
 
         /*
