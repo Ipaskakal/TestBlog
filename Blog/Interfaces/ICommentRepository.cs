@@ -10,5 +10,7 @@ namespace Blog.DAL.Interfaces
     {
         int GetCommentsPageCount(long postId, int onPage);
         IEnumerable<Comment> GetCommentsPage(long postId, int page, int onPage);
+
+        List<long> GetCommentsByPostId(long postId);
     }
 }

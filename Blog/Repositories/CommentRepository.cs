@@ -21,6 +21,11 @@ namespace Blog.DAL.Repositories
             int count = DbSet.Where(x => x.PostId == postId).Count();
             return count / onPage + (count % onPage == 0 ? 0 : 1);
         }
+
+        public List<long> GetCommentsByPostId(long postId)
+        {
+            return DbSet.Where(x => x.PostId == postId).Select(x=>x.Id).ToList();
+        }
         public IEnumerable<Models.Comment> GetCommentsPage(long postId, int page, int onPage)
         {
             if (page > GetCommentsPageCount(postId, onPage))

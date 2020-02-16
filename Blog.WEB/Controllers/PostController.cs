@@ -72,12 +72,28 @@ namespace Blog.WEB.Controllers
             return View("Error");
         }
         
-        public IActionResult Delete(long id)
+        public IActionResult DeletePost(long id)
         {
+            var commentsId = _unitOfWork.CommentRepository.GetCommentsByPostId(id);
+            if (commentsId != null && commentsId.Count() > 0)
+            {
+                foreach (var commentId in commentsId)
+                {
+                    _unitOfWork.CommentRepository.Remove(commentId);
+                }
+            }
             if (!_unitOfWork.PostRepository.Remove(id))
                 return View("Error"); 
             _unitOfWork.Commit();
             return RedirectToAction("Index","Home");
+        }
+
+        public IActionResult DeleteComment(long id, int page, long postId)
+        {
+            if (!_unitOfWork.CommentRepository.Remove(id))
+                return View("Error"); 
+            _unitOfWork.Commit();
+            return RedirectToAction("Post", "Post", new { id = postId, page });
         }
 
         public IActionResult Edit(long id)

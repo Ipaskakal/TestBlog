@@ -10,7 +10,7 @@
                 <p>Posted by @Model.Author.UserName</p>
             </div>
 
-            @if (User.IsInRole("Admin") || Model.Author.Id ==User.Identity.Name)
+            @if (User.IsInRole("Admin") || Model.Author.UserName ==User.Identity.Name)
             {
                 <div class="row">
                     <div class="col-md-4">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-md-4"></div>
                     <div class="col-md-4" style="text-align:right">
-                        <a href="@Url.Action("Delete", "Post", new { id = Model.Id })">Delete</a>
+                        <a href="@Url.Action("DeletePost", "Post", new { id = Model.Id })">Delete</a>
                     </div>
                 </div>
             }
@@ -31,6 +31,14 @@
                 <p>
                     @c.Text ---- @c.Created --- Posted by @c.Author.UserName
                 </p>
+
+            @if (User.IsInRole("Admin") || User.Identity.Name == c.Author.UserName)
+            {
+                <div class="col-md-4"></div>
+                <div class="col-md-4" style="text-align:right">
+                    <a href="@Url.Action("DeleteComment", "Post", new { id = c.Id, postId = c.PostId, page = Model.PageNum })">Delete</a>
+                </div>
+            }
             }
         </div>
         @if (User.Identity.IsAuthenticated)
