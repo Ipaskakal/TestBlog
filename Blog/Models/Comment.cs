@@ -10,14 +10,17 @@ namespace Blog.DAL.Models
     public class Comment
     {
         public long Id { get; set; }
+        public long PostId { get; set; }
         public string Text { get; set; } //Comment text
         public DateTime Created { get; set; } //Time of creation
 
-        public long PostId { get; set; }
-        public Post Post { get; set; }
+        public IdentityUser Author { get; set; }
 
         public string AuthorId { get; set; }
-        public IdentityUser Author { get; set; }
+        public Post Post { get; set; }
+
+        
+        
 
     }
 }

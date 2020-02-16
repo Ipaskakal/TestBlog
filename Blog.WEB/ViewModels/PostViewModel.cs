@@ -13,12 +13,14 @@ namespace Blog.WEB.ViewModels
         {
             DisplayedComments = new List<CommentViewModel>();
         }
-        public int Id { get; set; }
+        public long Id { get; set; }
         
         public string Title { get; set; } = "";
-        public string Body { get; set; } = "";
+        public string Text { get; set; } = "";
 
         public UserViewModel Author { get; set; }
+
+        public string AuthorId { get; set; }
 
         /*public IFormFile Image { get; set; } = null;*/
         public List<CommentViewModel> DisplayedComments { get; }

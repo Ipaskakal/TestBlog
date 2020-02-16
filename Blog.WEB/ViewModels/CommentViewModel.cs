@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,13 +8,14 @@ using System.Threading.Tasks;
 namespace Blog.WEB.ViewModels
 {
     public class CommentViewModel
-    {   [Required]
-        public int PostId { get; set; }
+    {   
+        public long Id { get; set; }
+        public long PostId { get; set; }
         [Required]
-        public string Message { get; set; }
+        public string Text { get; set; }
 
-        public DataType Creation { get; set; }
+        public DateTime Created { get; set; }
 
-        public string Username { get; set; }
+        public IdentityUser Author { get; set; }
     }
 }

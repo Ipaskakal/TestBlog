@@ -38,7 +38,7 @@ namespace Blog.WEB.Controllers
             return View("Error");
         }
 
-        [HttpPost]
+      /*  [HttpPost]
         public IActionResult Edit(PostCreationViewModel model) //Checking is edited post is valid and saving it to database 
         {
             if (ModelState.IsValid)
@@ -53,36 +53,19 @@ namespace Blog.WEB.Controllers
             }
             return View("Create", model);
         }
-
+*/
         [HttpGet]
-        public async Task<IActionResult> Remove(int id, int page)
+        public  IActionResult Remove(int id, int page)
         {
             if (!_unitOfWork.PostRepository.Remove(id))
                 return View("Error"); //There's no such post in database
-            await _unitOfWork.Commit().ConfigureAwait(true);
+            _unitOfWork.Commit();
             return RedirectToAction("Index", "Home", new { id = page }); //Return to homepage
         }
 
-        [HttpPost]
-        public IActionResult Create(PostCreationViewModel model) //Checking is new post is valid and saving it to database
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = new DAL.Models.Post();
-                model.AuthorId = _userManager.GetUserId(User); //Setting current user as author
-                _mapper.Map(model, entity);
-                entity.Created = DateTime.Now;
-                _unitOfWork.PostRepository.Add(entity);
-                _unitOfWork.Commit();
-                return RedirectToAction("Show", "Post", new { id = model.Id }); //Openint edited post
-            }
-            return View(model);
-        }
+        
 
-        public IActionResult Create()
-        {
-            return View();
-        }
+        
 
 
     }

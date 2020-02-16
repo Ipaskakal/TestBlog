@@ -12,16 +12,13 @@
     {
 
         <div class="record">
-            <div class="row  h-100">
-                <div class="col h-100">
-                    <a asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
+            <div class="row">
+                <div class="col-md-6">
+                    <a asp-controller="Post" asp-action="Post" asp-route-id="@post.Id">
                         @post.Title
                     </a>
-                    <div class="col-md-4">
-                        <a href="@Url.Action("Show", "Post", new { id = @post.Id })">
-                            Details...
-                        </a>
-                        <span> | @post.DateTimeStr | </span>
+                    <div class="col-md-6">
+                        <span> @post.Created </span>
                         <span>@post.CommentsCount comment@(post.CommentsCount != 1 ? "s" : "")</span>
                     </div>
                 </div>

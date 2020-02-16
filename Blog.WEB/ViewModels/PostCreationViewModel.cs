@@ -16,7 +16,7 @@ namespace Blog.WEB.ViewModels
         [Required]
         [Display(Name = "Text of post")]
         public string Text { get; set; } = "";
-        [Required]
+        
         public string AuthorId { get; set; }
         /*public IFormFile Image { get; set; } = null;*/
     }

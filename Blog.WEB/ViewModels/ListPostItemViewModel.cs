@@ -12,7 +12,7 @@ namespace Blog.WEB.ViewModels
         /*public string MainPicture { get; set; }*/
         public UserViewModel Author { get; set; }
 
-        public string DateTimeStr { get; set; }
+        public DateTime Created { get; set; }
 
         public int CommentsCount { get; set; }
     }

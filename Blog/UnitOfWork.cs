@@ -22,9 +22,9 @@ namespace Blog.DAL
             PostRepository = new PostRepository(_appDbContext,files);
             CommentRepository = new CommentRepository(_appDbContext);
         }
-        public async Task<int> Commit()
+        public  int Commit()
         {
-            return await _appDbContext.SaveChangesAsync();
+            return  _appDbContext.SaveChanges();
         }
         public void Dispose()
         {

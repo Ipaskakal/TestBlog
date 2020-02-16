@@ -14,24 +14,18 @@
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Blog</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="1">Blog</a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="EditPost">Posting</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Create">Posting</a>
                         </li>
                     }
                 </ul>
             </div>
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin page</a>
-                        </li>
-                    }
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">

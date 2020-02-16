@@ -9,6 +9,6 @@ namespace Blog.DAL.Interfaces
     {
         IPostRepository PostRepository { get; }
         ICommentRepository CommentRepository { get; }
-        Task<int> Commit();
+        int Commit();
     }
 }

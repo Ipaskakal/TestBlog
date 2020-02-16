@@ -32,14 +32,14 @@ namespace Blog.WEB.Controllers
             {
                 var result = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false).ConfigureAwait(true);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { id = 1 });
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync().ConfigureAwait(true);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { id = 1 });
             
         }
 
@@ -65,7 +65,7 @@ namespace Blog.WEB.Controllers
             if (result.Succeeded)
             {
                  await _signInManager.SignInAsync(user, false).ConfigureAwait(true);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { id = 1 });
             }
             return View(regist);
 

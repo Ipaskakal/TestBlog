@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Blog.DAL.Data;
 using Microsoft.AspNetCore.Http;
 using Blog.DAL.Interfaces;
+using System.Threading.Tasks;
 
 namespace Blog.DAL.Repositories
 {
@@ -59,8 +60,6 @@ namespace Blog.DAL.Repositories
         {
             DbSet.Update(element);
         }
-
-        
 
         public TEntity Get(long id)
         {

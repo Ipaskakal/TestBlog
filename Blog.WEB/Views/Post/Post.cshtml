@@ -4,10 +4,10 @@
         <h2 class="text-center">@Model.Title</h2>
         <div class="row  h-100">
             <div class="col h-100">
-                <p><markdown>@Model.Body</markdown></p>
+                <p><markdown>@Model.Text</markdown></p>
 
 
-                <p>Posted by @Model.Author</p>
+                <p>Posted by @Model.Author.UserName</p>
             </div>
 
 
@@ -18,7 +18,7 @@
             @foreach (var c in Model.DisplayedComments)
             {
                 <p>
-                    <markdown>@c.Message</markdown> ---- @c.Creation --- Posted by @c.Username
+                    @c.Text ---- @c.Created --- Posted by @c.Author.UserName
                 </p>
             }
         </div>

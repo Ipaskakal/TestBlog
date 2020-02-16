@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Blog.WEB.Controllers;
 
 namespace Blog.WEB
 {
@@ -28,6 +30,9 @@ namespace Blog.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            var logger = serviceProvider.GetService<ILogger<PostController>>();
+            services.AddSingleton(typeof(ILogger), logger);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -43,7 +48,8 @@ namespace Blog.WEB
                 .AddEntityFrameworkStores<DAL.Data.AppDbContext>();
             services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false; 
                 // Default SignIn settings.
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
@@ -77,7 +83,7 @@ namespace Blog.WEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id=1}");
             });
         }
         private async Task CreateRoles(IServiceProvider serviceProvider)

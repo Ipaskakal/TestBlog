@@ -12,7 +12,7 @@ namespace Blog.DAL.Models
         public string Text { get; set; } //Text of post
         /*public string Picture { get; set; } */
         public DateTime Created { get; set; } //Time of creation
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }=new List<Comment>();
         public string AuthorId { get; set; }
         public IdentityUser Author { get; set; }
 
