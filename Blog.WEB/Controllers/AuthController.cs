@@ -33,7 +33,7 @@ namespace Blog.WEB.Controllers
         {
             if (login != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false).ConfigureAwait(true);
+                await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false).ConfigureAwait(true);
             }
             return RedirectToAction("Index", "Home", new { id = 1 });
         }
@@ -69,7 +69,7 @@ namespace Blog.WEB.Controllers
             {
                  await _signInManager.SignInAsync(user, false).ConfigureAwait(false);
                 await _userManager.AddToRoleAsync(user, "User").ConfigureAwait(false);
-                int v = _unitOfWork.Commit();
+                _unitOfWork.Commit();
                 return RedirectToAction("Index", "Home", new { id = 1 });
             }
             return View(regist);

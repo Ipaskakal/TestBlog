@@ -88,61 +88,7 @@ namespace Blog.WEB.Controllers
 
 
 
-        /*
-             
-
-                [HttpGet("/Image/{image}")]
-                public IActionResult Image (string image)
-                {
-                    var afterDot = image.Substring(image.LastIndexOf('.')+1);
-                    var img = _files.GetImageStream(image);
-                    if (img == null)
-                        return null;
-                    return new FileStreamResult(img, $"image/{afterDot} ");
-                }
-
-                [HttpGet]
-                public IActionResult EditPost(int? id)
-                {
-                    if (id == null)
-                        return View(new PostViewModel());
-                    else
-                    {
-                        var post = _repository.GetPost((int)id);
-                        return View(new PostViewModel
-                        {
-                            Id = post.Id,
-                            Title = post.Title,
-                            Body = post.Body
-
-                        });
-
-                    }
-
-                }
-
-                [Authorize]
-                [HttpPost]
-                public async Task<IActionResult> EditPost(PostViewModel postViewModel)
-                {
-                    var post = new Post
-                    {
-                        Id = postViewModel.Id,
-                        Title = postViewModel.Title,
-                        Body = postViewModel.Body,
-                        Image = await _files.SaveImage(postViewModel.Image),
-                        UserName = User.Identity.Name
-                    };
-                    if (post.Id > 0)
-                        _repository.UpdatePost(post);
-                    else
-                        _repository.AddPost(post);
-                    if (await _repository.SaveChangesAsync())
-                        return RedirectToAction("Index");
-                    else
-                        return View(post);
-                }*/
-
+      
 
     }
 }
