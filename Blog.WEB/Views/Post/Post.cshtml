@@ -2,19 +2,19 @@
 
     <div class="container">
         <h2 class="text-center">@Model.Title</h2>
-        <div class="row  h-100">
-            <div class="col h-100">
+        <div class="row">
+            <div class="col-md-4">
                 <p><markdown>@Model.Text</markdown></p>
 
 
                 <p>Posted by @Model.Author.UserName</p>
             </div>
-            <div class="col h-100">
+            <div class="col-md-4">
                 @if (!String.IsNullOrEmpty(Model.ImagePath) && Model.ImagePath != "Error")
                 {
                     var imagePath = $"/Image/{Model.ImagePath}";
 
-                    <img class="block" src="@imagePath" />
+                    <img class="img-fluid mh-100" src="@imagePath" />
 
                 }
                     </div>

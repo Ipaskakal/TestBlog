@@ -20,8 +20,8 @@ namespace Blog.WEB.Controllers
         private readonly DAL.Interfaces.IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
-        private IConfiguration _configuration;
-        private ILogger _logger;
+        private readonly IConfiguration _configuration;
+        private  ILogger _logger;
 
 
         public PostController(UserManager<IdentityUser> userManager, DAL.Interfaces.IUnitOfWork unitOfWork, IMapper mapper,
@@ -86,7 +86,7 @@ namespace Blog.WEB.Controllers
         public IActionResult DeletePost(long id)
         {
             var commentsId = _unitOfWork.CommentRepository.GetCommentsByPostId(id);
-            if (commentsId != null && commentsId.Count() > 0)
+            if (commentsId != null && commentsId.Count > 0)
             {
                 foreach (var commentId in commentsId)
                 {
@@ -122,15 +122,19 @@ namespace Blog.WEB.Controllers
         [HttpPost]
         public IActionResult Edit(PostCreationViewModel model) //Checking is edited post is valid and saving it to database 
         {
-            if (ModelState.IsValid)
+            if (model != null)
             {
-                var entity = _unitOfWork.PostRepository.Get((long)model.Id);
-                if (entity == null)
-                    return View("Error");
-                _mapper.Map(model, entity);
-                _unitOfWork.PostRepository.Update(entity);
-                _unitOfWork.Commit();
-                return RedirectToAction("Post", new { id = model.Id }); //Opening edited post
+                if (ModelState.IsValid)
+                {
+
+                    DAL.Models.Post entity = _unitOfWork.PostRepository.Get(model.Id);
+                    if (entity == null)
+                        return View("Error");
+                    _mapper.Map(model, entity);
+                    _unitOfWork.PostRepository.Update(entity);
+                    _unitOfWork.Commit();
+                    return RedirectToAction("Post", new { id = model.Id }); //Opening edited post
+                }
             }
             return View(model);
         }
@@ -140,28 +144,30 @@ namespace Blog.WEB.Controllers
         public async Task<IActionResult> Comment(CommentViewModel model)
         {
             ViewData["ReCaptchaKey"] = _configuration.GetSection("GoogleReCaptcha:key").Value;
-
-            if (!ModelState.IsValid)
-                return RedirectToAction("Post", new { id = model.PostId });
-
-            if (ReCaptchaPassed(
-            Request.Form["g-recaptcha-response"], 
-            _configuration.GetSection("GoogleReCaptcha:secret").Value,
-            _logger
-            ).Result)
+            if (model != null)
             {
-                var entity = new DAL.Models.Comment
+                if (!ModelState.IsValid)
+                    return RedirectToAction("Post", new { id = model.PostId });
+
+                if (ReCaptchaPassed(
+                Request.Form["g-recaptcha-response"],
+                _configuration.GetSection("GoogleReCaptcha:secret").Value,
+                _logger
+                ).Result)
                 {
-                    Author = await _userManager.GetUserAsync(User).ConfigureAwait(false),
-                    AuthorId = _userManager.GetUserId(User),
-                    PostId = model.PostId,
-                    Created = DateTime.Now,
-                    Text = model.Text
-                };
-                _unitOfWork.CommentRepository.Add(entity);
-                var x =_unitOfWork.PostRepository.Get(model.PostId);
-                _unitOfWork.Commit();
-                return RedirectToAction( "Post", new { id = model.PostId });
+                    var entity = new DAL.Models.Comment
+                    {
+                        Author = await _userManager.GetUserAsync(User).ConfigureAwait(false),
+                        AuthorId = _userManager.GetUserId(User),
+                        PostId = model.PostId,
+                        Created = DateTime.Now,
+                        Text = model.Text
+                    };
+                    _unitOfWork.CommentRepository.Add(entity);
+                    _unitOfWork.PostRepository.Get(model.PostId);
+                    _unitOfWork.Commit();
+                    return RedirectToAction("Post", new { id = model.PostId });
+                }
             }
             return RedirectToAction("Post", new { id = model.PostId }); //If not - retry
         }
@@ -173,7 +179,7 @@ namespace Blog.WEB.Controllers
             HttpResponseMessage res = httpClient.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={gRecaptchaResponse}").Result;
             if (res.StatusCode != HttpStatusCode.OK)
             {
-                logger.LogError("Error while sending request to ReCaptcha");
+                logger.LogError("");
                 return false;
             }
 

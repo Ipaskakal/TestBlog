@@ -16,7 +16,7 @@ namespace Blog.DAL.Repositories
     public class Repository<TEntity> where TEntity : class
     {
         private readonly AppDbContext _DbContext;
-        private IFiles _files;
+        private readonly IFiles _files;
         public Repository(AppDbContext dbContext, IFiles files)
         {
             _DbContext = dbContext;

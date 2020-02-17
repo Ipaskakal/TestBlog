@@ -20,23 +20,23 @@ namespace Blog.WEB.Controllers
     public class HomeController : Controller
     {
         const int ON_PAGE = 5;
-        private IMapper _mapper;
-        private IConfiguration _configuration;
-        private DAL.Interfaces.IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly DAL.Interfaces.IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(DAL.Interfaces.IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration, UserManager<IdentityUser> userManager)
+        public HomeController(DAL.Interfaces.IUnitOfWork unitOfWork, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _configuration = configuration;
         }
        
         public IActionResult Index(int id)// id of page of posts
         {
-            var model = new ListPostViewModel();
-            model.PageCount = _unitOfWork.PostRepository.GetPageCount(ON_PAGE);
+            var model = new ListPostViewModel
+            {
+                PageCount = _unitOfWork.PostRepository.GetPageCount(ON_PAGE)
+            };
             if (id > model.PageCount)
                 id = model.PageCount;
             model.PageNum = id;

@@ -11,11 +11,11 @@ namespace Blog.DAL.Repositories
 {
     public class Files : IFiles
     {
-        private string _imagePATH;
+        private readonly string _imagePATH;
 
         public Files()
         {
-            _imagePATH = "wwwroot/content/blog";
+            _imagePATH = "../Blog/wwwroot/content/blog";
         }
 
         public FileStream GetImageStream(string image)
@@ -23,7 +23,7 @@ namespace Blog.DAL.Repositories
             try
             {
                 return new FileStream(Path.Combine(_imagePATH, image), FileMode.Open, FileAccess.Read);
-            }catch(Exception e)
+            }catch (Exception)
             {
                 return null;
             }
