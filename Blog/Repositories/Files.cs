@@ -13,9 +13,9 @@ namespace Blog.DAL.Repositories
     {
         private string _imagePATH;
 
-        public Files(IConfiguration configuration)
+        public Files()
         {
-            _imagePATH = configuration["Path:Images"];
+            _imagePATH = "wwwroot/content/blog";
         }
 
         public FileStream GetImageStream(string image)
@@ -30,7 +30,7 @@ namespace Blog.DAL.Repositories
             
         }
 
-        public async Task<string> SaveImage(IFormFile image)
+        public string SaveImage(IFormFile image)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Blog.DAL.Repositories
 
                 using (var fileStream = new FileStream(Path.Combine(save_path, fileName), FileMode.Create))
                 {
-                    await image.CopyToAsync(fileStream);
+                     image.CopyTo(fileStream);
                 }
                 return fileName;
             }

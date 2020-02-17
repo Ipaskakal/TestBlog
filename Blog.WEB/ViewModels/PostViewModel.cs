@@ -22,7 +22,7 @@ namespace Blog.WEB.ViewModels
 
         public string AuthorId { get; set; }
 
-        /*public IFormFile Image { get; set; } = null;*/
+        public string ImagePath { get; set; } = null;
         public List<CommentViewModel> DisplayedComments { get; }
         public int PageNum { get; set; }
         public int PageCount { get; set; }

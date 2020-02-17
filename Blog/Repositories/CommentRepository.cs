@@ -12,7 +12,7 @@ namespace Blog.DAL.Repositories
 {
     class CommentRepository : Repository<Comment>, ICommentRepository
     {
-        public CommentRepository(AppDbContext dbContext) : base(dbContext)
+        public CommentRepository(AppDbContext dbContext, IFiles files) : base(dbContext, files)
         {
         }
 

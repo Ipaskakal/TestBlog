@@ -9,8 +9,17 @@
 
                 <p>Posted by @Model.Author.UserName</p>
             </div>
+            <div class="col h-100">
+                @if (!String.IsNullOrEmpty(Model.ImagePath) && Model.ImagePath != "Error")
+                {
+                    var imagePath = $"/Image/{Model.ImagePath}";
 
-            @if (User.IsInRole("Admin") || Model.Author.UserName ==User.Identity.Name)
+                    <img class="block" src="@imagePath" />
+
+                }
+                    </div>
+
+            @if (User.IsInRole("Admin") || Model.Author.UserName == User.Identity.Name)
             {
                 <div class="row">
                     <div class="col-md-4">

@@ -14,6 +14,5 @@ namespace Blog.DAL.Interfaces
         IEnumerable<Post> GetPage(int page, int onPage);
         int GetPageCount(int onPage);
 
-        void Add(Post element, IFormFile Image);
     }
 }

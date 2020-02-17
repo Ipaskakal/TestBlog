@@ -7,17 +7,20 @@ using Blog.DAL.Interfaces;
 using Blog.DAL.Models;
 using Blog.DAL.Data;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Blog.DAL.Repositories
 {
     class PostRepository : Repository<Post>, IPostRepository
     {
-        private IFiles _files;
+        
 
-        public PostRepository(AppDbContext blogContext, IFiles files) : base(blogContext) 
+        public PostRepository(AppDbContext blogContext,IFiles files) : base(blogContext, files) 
         {
-            _files = files;
+            
         }
+
+        
 
         public new Post Get(long id)
         {
@@ -26,13 +29,6 @@ namespace Blog.DAL.Repositories
                 .Include(x => x.Author)
                 .FirstOrDefault(x => x.Id == id);
         }
-
-        public async void Add(Post element, IFormFile Image)
-        {
-            await _files.SaveImage(Image);
-            DbSet.Add(element);
-        }
-
 
 
         public int GetPageCount(int onPage)
@@ -56,5 +52,7 @@ namespace Blog.DAL.Repositories
                 
                 .ToList();
         }
+
+       
     }
 }

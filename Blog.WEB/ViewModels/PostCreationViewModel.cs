@@ -20,6 +20,6 @@ namespace Blog.WEB.ViewModels
 
 
         public string AuthorId { get; set; }
-        /*public IFormFile Image { get; set; } = null;*/
+        public IFormFile Image { get; set; } = null;
     }
 }

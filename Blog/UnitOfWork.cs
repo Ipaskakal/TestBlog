@@ -19,8 +19,9 @@ namespace Blog.DAL
         {
 
             _appDbContext = appDbContext;
-            PostRepository = new PostRepository(_appDbContext,files);
-            CommentRepository = new CommentRepository(_appDbContext);
+            files = new Files();
+            PostRepository = new PostRepository(_appDbContext, files);
+            CommentRepository = new CommentRepository(_appDbContext, files);
         }
         public  int Commit()
         {

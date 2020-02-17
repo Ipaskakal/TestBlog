@@ -9,7 +9,7 @@ namespace Blog.DAL.Interfaces
 {
     public interface IFiles
     {
-        Task<string> SaveImage(IFormFile image);
+        string SaveImage(IFormFile image);
 
         FileStream GetImageStream(string image);
     }

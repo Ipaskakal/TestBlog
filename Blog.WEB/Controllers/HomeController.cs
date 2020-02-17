@@ -68,8 +68,9 @@ namespace Blog.WEB.Controllers
                     var entity = new DAL.Models.Post();
                     _mapper.Map(model, entity);
                     entity.Created = DateTime.Now;
+                    entity.Image = model.Image;
                     _unitOfWork.PostRepository.Add(entity);
-                    var x= _unitOfWork.Commit();
+                    int x = _unitOfWork.Commit();
                     return RedirectToAction("Index", "Home");
                 }
             }

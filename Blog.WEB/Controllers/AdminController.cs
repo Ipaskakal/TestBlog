@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,29 +38,13 @@ namespace Blog.WEB.Controllers
             return View("Error");
         }
 
-      /*  [HttpPost]
-        public IActionResult Edit(PostCreationViewModel model) //Checking is edited post is valid and saving it to database 
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = _unitOfWork.PostRepository.Get((long)model.Id);
-                if (entity == null)
-                    return View("Error");
-                _mapper.Map(model, entity);
-                _unitOfWork.PostRepository.Update(entity);
-                _unitOfWork.Commit();
-                return RedirectToAction("Show", "Post", new { id = model.Id }); //Opening edited post
-            }
-            return View("Create", model);
-        }
-*/
+  
         [HttpGet]
         public  IActionResult Remove(int id, int page)
         {
             if (!_unitOfWork.PostRepository.Remove(id))
-                return View("Error"); //There's no such post in database
             _unitOfWork.Commit();
-            return RedirectToAction("Index", "Home", new { id = page }); //Return to homepage
+            return RedirectToAction("Index", "Home", new { id = page }); 
         }
 
         
@@ -69,4 +53,4 @@ namespace Blog.WEB.Controllers
 
 
     }
-}
+}*/

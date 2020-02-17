@@ -8,16 +8,19 @@ using Blog.DAL.Data;
 using Microsoft.AspNetCore.Http;
 using Blog.DAL.Interfaces;
 using System.Threading.Tasks;
+using Blog.DAL.Models;
+using System.IO;
 
 namespace Blog.DAL.Repositories
 {
     public class Repository<TEntity> where TEntity : class
     {
         private readonly AppDbContext _DbContext;
-
-        public Repository(AppDbContext dbContext)
+        private IFiles _files;
+        public Repository(AppDbContext dbContext, IFiles files)
         {
             _DbContext = dbContext;
+            _files = files;
 
         }
         protected DbSet<TEntity> DbSet
@@ -30,7 +33,17 @@ namespace Blog.DAL.Repositories
 
         public void Add(TEntity element)
         {
+            if (element is Post)
+            {
+                (element as Post).ImagePath = _files.SaveImage((element as Post).Image );
+            }
+            
             DbSet.Add(element);
+        }
+
+        public FileStream GetImageStream(string image)
+        {
+            return _files.GetImageStream(image);
         }
 
 
@@ -62,7 +75,7 @@ namespace Blog.DAL.Repositories
         }
 
         public TEntity Get(long id)
-        {
+        { 
             return DbSet.Find(id);
         }
         public TEntity Get(Expression<Func<TEntity, bool>> predicate)
@@ -73,5 +86,6 @@ namespace Blog.DAL.Repositories
         {
             return DbSet.Where(predicate).ToList();
         }
+        
     }
 }

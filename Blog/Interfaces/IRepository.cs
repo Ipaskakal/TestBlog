@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Blog.DAL.Interfaces
 {
@@ -13,6 +14,8 @@ namespace Blog.DAL.Interfaces
         void Remove(TEntity element);
         bool Remove(long elementId);
         void RemoveRange(IEnumerable<TEntity> elements);
+
+        public FileStream GetImageStream(string image);
 
         void Update(TEntity element);
 

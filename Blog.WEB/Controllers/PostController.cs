@@ -40,6 +40,7 @@ namespace Blog.WEB.Controllers
             var post = _unitOfWork.PostRepository.Get(id);
             if (post != null)
             {
+
                 var model = new PostViewModel();
                 _mapper.Map(post, model);
                 model.PageCount = _unitOfWork.CommentRepository.GetCommentsPageCount(id, ON_PAGE);
@@ -71,7 +72,17 @@ namespace Blog.WEB.Controllers
             }
             return View("Error");
         }
-        
+
+        [HttpGet("/Image/{image}")]
+        public IActionResult Image(string image)
+        {
+            var afterDot = image.Substring(image.LastIndexOf('.') + 1);
+            System.IO.FileStream img = _unitOfWork.PostRepository.GetImageStream(image);
+            if (img == null)
+                return null;
+            return new FileStreamResult(img, $"image/{afterDot} ");
+        }
+
         public IActionResult DeletePost(long id)
         {
             var commentsId = _unitOfWork.CommentRepository.GetCommentsByPostId(id);
